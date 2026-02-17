@@ -30,7 +30,7 @@ echo "🚢 Building and pushing the canary app image"
 
 cd ../app
 
-docker build -t nextjs-canary .
+docker buildx build --platform linux/amd64 -t nextjs-canary .
 
 docker tag nextjs-canary:latest $ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/nextjs-canary:latest
 
