@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextjs-v2
+  namespace: canary-app
+  labels:
+    app: nextjs
+    version: v2
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nextjs
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: nextjs
+        version: v2
+    spec:
+      containers:
+      - name: nextjs
+        image: 263015886462.dkr.ecr.us-east-1.amazonaws.com/nextjs-canary:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: VERSION
+          value: "V2"
+        - name: APP_VERSION
+          value: "V2"
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5

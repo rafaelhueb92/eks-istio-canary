@@ -1,0 +1,23 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: nextjs-virtualservice
+  namespace: canary-app
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - nextjs-gateway
+  http:
+  - match:
+    - uri:
+        prefix: "/"
+    route:
+    - destination:
+        host: nextjs-service
+        subset: v1
+      weight: 60
+    - destination:
+        host: nextjs-service
+        subset: v2
+      weight: 40
