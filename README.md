@@ -1,7 +1,9 @@
 # EKS Istio Canary Deployment
 
 <div align='center'>
-![EKS Istio Canary Architecture](./images/title.jpeg)
+
+[EKS Istio Canary Architecture](./images/title.jpeg)
+
 </div>
 
 A complete Terraform and Kubernetes setup for deploying ArgoCD, Istio service mesh, and observability stack on AWS EKS with canary deployment patterns.
