@@ -14,6 +14,12 @@ module "eks" {
   # which will allow resources to be deployed into the cluster
   enable_cluster_creator_admin_permissions = true
 
+  # Disable cluster encryption to avoid null value errors in KMS policy
+  cluster_encryption_config = {}
+
+  # Create cluster security group
+  create_cluster_security_group = true
+
   cluster_addons = {
     coredns    = {}
     kube-proxy = {}
@@ -25,11 +31,11 @@ module "eks" {
 
   eks_managed_node_groups = {
     initial = {
-      instance_types = ["m5.large"]
+      instance_types = ["t3.medium"]
 
       min_size     = 1
-      max_size     = 5
-      desired_size = 2
+      max_size     = 3
+      desired_size = 1
     }
   }
 

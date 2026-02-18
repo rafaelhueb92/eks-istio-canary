@@ -3,7 +3,6 @@ set -euo pipefail
 echo "🚀 Initializing Terraform"
 cd eks
 terraform init
-terraform apply -refresh-only
 terraform apply -auto-approve 
 
 echo "☸️ Configuring kubectl"

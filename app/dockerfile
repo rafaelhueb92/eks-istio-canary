@@ -1,39 +1,17 @@
-FROM node:20-alpine AS base
+FROM node:20-alpine
 
-# Build-time argument for selecting the app folder under the build context (default: canary-app)
-ARG APP_FOLDER=canary-app
-ENV APP_FOLDER=${APP_FOLDER}
+ARG APP_FOLDER=nodejs
 
-FROM base AS deps
 WORKDIR /app
-# Copy only package files to install deps (faster rebuilds)
+
 COPY ${APP_FOLDER}/package*.json ./
-RUN npm install
+RUN npm install --production
 
-FROM base AS builder
-WORKDIR /app
-# reuse installed node_modules from deps
-COPY --from=deps /app/node_modules ./node_modules
-# copy app source (from chosen app folder)
-COPY ${APP_FOLDER} .
-RUN npm run build
+COPY ${APP_FOLDER}/ .
 
-FROM node:20-alpine AS runner
-ARG APP_FOLDER=canary-app
-WORKDIR /app
 ENV NODE_ENV=production
+ENV PORT=3000
 
-RUN addgroup -S nodejs && adduser -S nextjs -G nodejs
-
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/public ./public
-
-# Install only production dependencies defined by the standalone package.json
-RUN if [ -f package-lock.json ]; then npm ci --production; else npm install --production; fi
-
-USER nextjs
 EXPOSE 3000
-ENV PORT 3000
 
 CMD ["npm", "start"]
