@@ -1,8 +1,8 @@
 # EKS Istio Canary Deployment
 
-<div align='center'>
+<div align="center">
 
-[EKS Istio Canary Architecture](./images/title.jpeg)
+![Project art](./images/title.jpeg)
 
 </div>
 
